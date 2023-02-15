@@ -1,6 +1,11 @@
-<div class="flyntComponent componentSpacing {{ options.theme }}" is="flynt-<%= nameKebabCase %>">
+<% 
+  var jsMediaQueryOutput = (jsMediaQueryType && jsMediaQueryBreakpoint) 
+    ? 'client:media="(' + jsMediaQueryType + ': ' + jsMediaQueryBreakpoint + 'px)"'
+    : '' 
+%>
+<flynt-component <%= jsStrategy %> <%- jsMediaQueryOutput %> name="<%= nameUpperCamelCase %>" class="componentSpacing" {{ options.theme ? 'data-theme="' ~ options.theme ~ '"' }}>
   {# <script type="application/json">{{ jsonData|json_encode }}</script> #}
   <div class="container centerMaxWidthContainer">
     <h1>Component: <%= namePretty %></h1>
   </div>
-</div>
+</flynt-component>

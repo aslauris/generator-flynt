@@ -1,7 +1,7 @@
 {
-  "name": "@flyntwp/generator-flynt",
+  "name": "@flyntwp/generator-flynt-next",
   "version": "0.4.0",
-  "description": "A Yeoman generator for Flynt",
+  "description": "A Yeoman generator for Flynt next",
   "homepage": "https://github.com/flyntwp/generator-flynt",
   "bugs": "https://github.com/flyntwp/generator-flynt/issues",
   "author": "bleech",

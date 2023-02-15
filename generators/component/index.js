@@ -10,7 +10,7 @@ module.exports = class extends Generator {
 
   initializing() {
     this.themePath = this.destinationPath("theme/");
-    this.log("Starting Flynt Component Generator...");
+    this.log("Starting Flynt-next Component Generator...");
   }
 
   prompting() {
@@ -35,6 +35,9 @@ module.exports = class extends Generator {
       if (this.type === "custom") {
         return this._promptCustomComponent().then(answers => {
           this.name = _.upperFirst(answers.name);
+          this.jsStrategy = answers.jsStrategy;
+          this.jsMediaQueryType = answers.jsMediaQueryType;
+          this.jsMediaQueryBreakpoint = answers.jsMediaQueryBreakpoint;
           if (answers.category) {
             this.name = answers.category + this.name;
           }
@@ -64,6 +67,70 @@ module.exports = class extends Generator {
           const validStringRegEx = /^[A-Z][A-Za-z]*$/g;
           if (!validStringRegEx.test(input)) {
             return "Invalid component name";
+          }
+          return true;
+        },
+      },
+      {
+        type: "list",
+        name: "jsStrategy",
+        message: "JS loading strategy:",
+        choices: [
+          {
+            name: "No JavaScript",
+            value: "",
+          },
+          {
+            name: "On idle",
+            value: "client:idle",
+          },
+          {
+            name: "On visible",
+            value: "client:visible",
+          },
+          {
+            name: "On load",
+            value: "client:load",
+          },
+        ],
+      },
+      {
+        type: "list",
+        when: (answers) => {
+          return answers.jsStrategy !== ''
+        },
+        name: "jsMediaQueryType",
+        message: "JS media query type:",
+        choices: [
+          {
+            name: "None",
+            value: "",
+          },
+          {
+            name: "(max-width: XXX px)",
+            value: "max-width",
+          },
+          {
+            name: "(min-width: XXX px)",
+            value: "min-width",
+          },
+        ],
+      },
+      {
+        type: "input",
+        when: (answers) => {
+          return answers.jsStrategy !== '' && answers.jsMediaQueryType !== ''
+        },
+        name: "jsMediaQueryBreakpoint",
+        message: "JS media query breakpoint in px?",
+        default: "1024",
+        validate: function(input) {
+          if (!input.length) {
+            return "Please enter a breakpoint!";
+          }
+          const validStringRegEx = /^[0-9]*$/g;
+          if (!validStringRegEx.test(input)) {
+            return "Invalid breakpoint value";
           }
           return true;
         },
@@ -156,6 +223,9 @@ module.exports = class extends Generator {
       nameKebabCase: this.nameKebabCase,
       nameUpperCamelCase: this.nameUpperCamelCase,
       nameLowerCamelCase: this.nameLowerCamelCase,
+      jsStrategy: this.jsStrategy,
+      jsMediaQueryType: this.jsMediaQueryType,
+      jsMediaQueryBreakpoint: this.jsMediaQueryBreakpoint
     });
   }
 
@@ -184,6 +254,9 @@ module.exports = class extends Generator {
           nameKebabCase: this.nameKebabCase,
           nameUpperCamelCase: this.nameUpperCamelCase,
           nameLowerCamelCase: this.nameLowerCamelCase,
+          jsStrategy: this.jsStrategy,
+          jsMediaQueryType: this.jsMediaQueryType,
+          jsMediaQueryBreakpoint: this.jsMediaQueryBreakpoint
         }
       );
     }

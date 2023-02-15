@@ -7,7 +7,7 @@ module.exports = class extends Generator {
   }
 
   default() {
-    this.log(yosay("Welcome to the neat Flynt generator!"));
+    this.log(yosay("Welcome to the neat Flynt-next generator!"));
     this.composeWith(require.resolve("../component"));
   }
 };
